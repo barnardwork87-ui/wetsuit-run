@@ -102,7 +102,7 @@ h1 em{font-style:italic}
 <section id="reveal" class="hero hide">
   <nav class="bar"><span class="mark"><i></i></span><b>The Wetsuit Run</b><span class="muted">Lambert's Bay</span><span class="sp"></span><span class="muted">Finish</span></nav>
   <div class="left">
-    <h1>Happy birthday, <em id="bday">Birthday Legend.</em></h1>
+    <h1>Happy birthday, <em id="bday">Josh.</em></h1>
     <p class="lede">Your new wetsuit was brought to you by</p>
     <div class="names" id="names"></div>
     <p class="score" id="score"></p>
@@ -114,8 +114,8 @@ h1 em{font-style:italic}
 <script>
 /* ============ EDIT THESE ============ */
 const CONFIG = {
-  birthdayName: "Birthday Legend",
-  contributors: ["Contributor One","Contributor Two","Contributor Three","Contributor Four","Contributor Five","Contributor Six"],
+  birthdayName: "Josh",
+  contributors: ["Cara","Sezzo","J Thomas","Kev & Shani","Vida Schiff","Mikey P","David","Ash & Nix","Barney","Ruth & Jdog"],
   runSeconds: 50
 };
 /* ==================================== */
@@ -605,7 +605,7 @@ function showReveal(){
   const n=$('names');n.innerHTML='';
   CONFIG.contributors.forEach((name,i)=>{const r=document.createElement('div');r.className='r';r.style.animationDelay=(1.2+i*.25)+'s';
     r.innerHTML=`<span>${esc(name)}</span><small>${found.includes(name)?'found on the run':'chipped in'}</small><span class="d" style="background:${ACCENTS[i%5]}"></span>`;n.appendChild(r);});
-  $('score').textContent=`You grabbed ${found.length} of ${CONFIG.contributors.length} gifts and R${P.coins} on the way.`;
+  $('score').textContent=`You grabbed ${found.length} of ${CONFIG.contributors.length} gifts on the way.`;
   $('reveal').classList.remove('hide');lf2.start();
 }
 $('start').addEventListener('click',begin);
