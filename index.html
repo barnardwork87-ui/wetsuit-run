@@ -116,6 +116,7 @@ h1 em{font-style:italic}
 const CONFIG = {
   birthdayName: "Josh",
   contributors: ["Cara","Sezzo","J Thomas","Kev & Shani","Vida Schiff","Mikey P","David","Ash & Nix","Barney","Ruth & Jdog","Mikey H"],
+  titles: { "Mikey H": "the legend that sourced it all" },
   runSeconds: 50
 };
 /* ==================================== */
@@ -604,7 +605,7 @@ function showReveal(){
   $('hud').classList.add('hide');$('bday').textContent=CONFIG.birthdayName+'.';
   const n=$('names');n.innerHTML='';
   CONFIG.contributors.forEach((name,i)=>{const r=document.createElement('div');r.className='r';r.style.animationDelay=(1.2+i*.25)+'s';
-    r.innerHTML=`<span>${esc(name)}</span><small>${found.includes(name)?'found on the run':'chipped in'}</small><span class="d" style="background:${ACCENTS[i%5]}"></span>`;n.appendChild(r);});
+    r.innerHTML=`<span>${esc(name)}</span><small>${esc((CONFIG.titles||{})[name]||(found.includes(name)?'found on the run':'chipped in'))}</small><span class="d" style="background:${ACCENTS[i%5]}"></span>`;n.appendChild(r);});
   $('score').textContent=`You grabbed ${found.length} of ${CONFIG.contributors.length} gifts on the way.`;
   $('reveal').classList.remove('hide');lf2.start();
 }
