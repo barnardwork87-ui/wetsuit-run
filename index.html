@@ -41,7 +41,7 @@ h1 em{font-style:italic}
 .keys{font-size:14px;opacity:.7}
 .panel{border-left:var(--rule);position:relative;min-height:0;overflow:hidden}
 .panel canvas{position:absolute;inset:0;width:100%;height:100%}
-.tag{position:absolute;left:16px;bottom:14px;font-size:13px;opacity:.65}
+.tag{position:absolute;left:12px;bottom:12px;font-size:13px;background:var(--bg);border:1px solid var(--ink);padding:3px 8px;max-width:calc(100% - 24px)}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media (max-width:760px){
   .hero{grid-template-columns:1fr;grid-template-rows:auto 46vh auto}
@@ -85,30 +85,30 @@ h1 em{font-style:italic}
 <div id="toast"></div>
 
 <section id="loading" class="hero">
-  <nav class="bar"><span class="mark"><i></i></span><b>The Wetsuit Run</b><span class="muted">West Coast</span><span class="sp"></span><span class="muted">32°05′S 18°18′E</span></nav>
+  <nav class="bar"><span class="mark"><i></i></span><b>The Wetsuit Run</b><span class="muted">Water temp: cruel</span><span class="sp"></span><span class="muted">32°05′S 18°18′E</span></nav>
   <div class="left">
-    <h1>A birthday run up the <em>West Coast.</em></h1>
-    <p class="lede">Run the ore line into Lambert's Bay. Every gift you grab reveals someone who chipped in for your present.</p>
+    <h1>Josh, your 4/3 is <em>a war crime.</em></h1>
+    <p class="lede">Every session up the West Coast you paddle out in a 4/3 like it's summer in Durban, then sit in the bakkie shaking for an hour. We're done watching it. Run the ore line, grab the gifts, and find out who's sick of you being cold.</p>
     <div class="status">
-      <div class="row"><span>Paddling out</span><span id="pct">0%</span></div>
+      <div class="row"><span>Thawing Josh out</span><span id="pct">0%</span></div>
       <div class="loadline"><i id="loadbar"></i></div>
     </div>
-    <button class="link" id="start">Start the run <span class="arrow"></span></button>
-    <p class="keys">← → change lane &nbsp;·&nbsp; ↑ or space to jump &nbsp;·&nbsp; swipe on a phone</p>
+    <button class="link" id="start">Let's go, bud <span class="arrow"></span></button>
+    <p class="keys">← → change lane &nbsp;·&nbsp; ↑ or space to jump &nbsp;·&nbsp; swipe if you're on your phone, obviously</p>
   </div>
   <div class="panel"><canvas id="lf1"></canvas></div>
 </section>
 
 <section id="reveal" class="hero hide">
-  <nav class="bar"><span class="mark"><i></i></span><b>The Wetsuit Run</b><span class="muted">Lambert's Bay</span><span class="sp"></span><span class="muted">Finish</span></nav>
+  <nav class="bar"><span class="mark"><i></i></span><b>The Wetsuit Run</b><span class="muted">Lambert's Bay</span><span class="sp"></span><span class="muted">Finally warm</span></nav>
   <div class="left">
     <h1>Happy birthday, <em id="bday">Josh.</em></h1>
-    <p class="lede">Your new wetsuit was brought to you by</p>
+    <p class="lede">That 4/3 was basically a t-shirt. This is a 5/4. You're going to be so warm it's embarrassing. Brought to you by these absolute saints:</p>
     <div class="names" id="names"></div>
     <p class="score" id="score"></p>
-    <button class="link" id="again">Run it again <span class="arrow"></span></button>
+    <button class="link" id="again">Run it again, you freak <span class="arrow"></span></button>
   </div>
-  <div class="panel"><canvas id="lf2"></canvas><span class="tag">Placeholder wetsuit</span></div>
+  <div class="panel"><canvas id="lf2"></canvas><span class="tag">5/4 · placeholder drawing, still warmer than your 4/3</span></div>
 </section>
 
 <script>
@@ -279,6 +279,7 @@ cv.addEventListener('pointerdown',e=>{ts={x:e.clientX,y:e.clientY};});
 cv.addEventListener('pointerup',e=>{if(!ts)return;const dx=e.clientX-ts.x,dy=e.clientY-ts.y;if(Math.abs(dx)>30&&Math.abs(dx)>Math.abs(dy))laneTo(dx>0?1:-1);else jump();ts=null;});
 
 /* ---------- update ---------- */
+const QUIPS=["chipped in. Didn't want to watch you go blue again.","came through. Shocking, honestly.","pitched in. Say thank you, you animal.","is tired of hearing about the cold.","chipped in. That's love, bud.","didn't want you dying out there.","came through. Respect.","is funding your warmth. Weird flex.","chipped in. Unreal behaviour.","decided enough was enough.","chipped in. Hug them. Not in the 4/3 though."];
 let toastTimer;
 function toast(html){const el=$('toast');el.innerHTML=html;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2800);}
 function playerScreen(){return proj(P.x,P.y,P.z);}
@@ -312,7 +313,7 @@ function update(dt){
   }
   for(const c of coins){if(c.got||!inLane(c.lane))continue;if(Math.abs(c.z-P.z)<.8&&P.y<1.4){c.got=true;P.coins+=10;$('hudCoins').textContent=P.coins;const[sx,sy,k]=playerScreen();fx.push({x:sx+34,y:sy-k*1.9,vx:0,vy:-80,life:.7,kind:'text',txt:'+R10'});}}
   for(const g of gifts){if(g.got||!inLane(g.lane))continue;if(Math.abs(g.z-P.z)<1&&P.y<2){g.got=true;found.push(g.name);const[sx,sy,k]=playerScreen();burst(sx,sy-k,18);
-    $('hudGifts').textContent=`${found.length}/${CONFIG.contributors.length}`;toast(`<b>Gift found</b><em>${esc(g.name)}</em> chipped in`);}}
+    $('hudGifts').textContent=`${found.length}/${CONFIG.contributors.length}`;toast(`<b>Gift found</b><em>${esc(g.name)}</em> ${QUIPS[(found.length-1)%QUIPS.length]}`);}}
   obs=obs.filter(o=>o.z+o.d>camZ+.5);coins=coins.filter(c=>c.z>camZ+1&&!c.got);gifts=gifts.filter(g=>g.z>camZ+1&&!g.got);
   for(const f of fx){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=(f.kind==='text'?0:700)*dt;f.life-=dt;}fx=fx.filter(f=>f.life>0);
   $('hudDot').style.left=(clamp(P.z/RUN_LEN,0,1)*100)+'%';
@@ -570,7 +571,7 @@ function drawTrainWarning(){const tr=trains.find(tr=>tr.z>P.z+8&&tr.z<P.z+150);i
   const x=CX-camX*8,y=HY-36,p=.5+.5*Math.sin(t*12);
   ctx.save();ctx.lineWidth=1.3;ctx.strokeStyle=INK;ctx.fillStyle=BG;ctx.beginPath();ctx.rect(x-74,y-15,148,30);ctx.fill();ctx.stroke();
   ctx.fillStyle=RED;ctx.globalAlpha=.4+.6*p;ctx.beginPath();ctx.arc(x-56,y,5,0,7);ctx.fill();ctx.globalAlpha=1;
-  ctx.fillStyle=INK;ctx.font='400 15px "Inter Tight",sans-serif';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText('Ore train ahead',x-44,y+1);ctx.restore();}
+  ctx.fillStyle=INK;ctx.font='400 15px "Inter Tight",sans-serif';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText('Ore train. Move.',x-44,y+1);ctx.restore();}
 function drawFx(){for(const f of fx){ctx.globalAlpha=clamp(f.life*2,0,1);
   if(f.kind==='text'){ctx.fillStyle=INK;ctx.font='italic 22px "Instrument Serif",serif';ctx.textAlign='center';ctx.fillText(f.txt,f.x,f.y);}
   else if(f.kind==='star'){ctx.save();ctx.translate(f.x,f.y);ctx.rotate(f.life*6);ctx.strokeStyle=INK;ctx.lineWidth=1.3;for(let i=0;i<4;i++){ctx.rotate(Math.PI/4);ctx.beginPath();ctx.moveTo(-6,0);ctx.lineTo(6,0);ctx.stroke();}ctx.restore();}
@@ -605,8 +606,8 @@ function showReveal(){
   $('hud').classList.add('hide');$('bday').textContent=CONFIG.birthdayName+'.';
   const n=$('names');n.innerHTML='';
   CONFIG.contributors.forEach((name,i)=>{const r=document.createElement('div');r.className='r';r.style.animationDelay=(1.2+i*.25)+'s';
-    r.innerHTML=`<span>${esc(name)}</span><small>${esc((CONFIG.titles||{})[name]||(found.includes(name)?'found on the run':'chipped in'))}</small><span class="d" style="background:${ACCENTS[i%5]}"></span>`;n.appendChild(r);});
-  $('score').textContent=`You grabbed ${found.length} of ${CONFIG.contributors.length} gifts on the way.`;
+    r.innerHTML=`<span>${esc(name)}</span><small>${esc((CONFIG.titles||{})[name]||(found.includes(name)?'found on the run':'chipped in, missed it'))}</small><span class="d" style="background:${ACCENTS[i%5]}"></span>`;n.appendChild(r);});
+  $('score').textContent=found.length===CONFIG.contributors.length?`${found.length} of ${found.length} gifts. Now go sit in the lineup and don't shiver for once.`:`You grabbed ${found.length} of ${CONFIG.contributors.length} gifts. Still cold, mentally.`;
   $('reveal').classList.remove('hide');lf2.start();
 }
 $('start').addEventListener('click',begin);
